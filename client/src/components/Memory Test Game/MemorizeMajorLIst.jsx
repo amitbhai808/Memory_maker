@@ -105,31 +105,95 @@ export default function MemorizeMajorList() {
         100: "Disease"
     };
 
-    const [inputValue, setInputValue] = useState('');
     const [output, setOutput] = useState('');
+    const [Score, setScore] = useState(0);
+    const [quizOptions, setQuizOptions] = useState([]);
+    const [correctAnswer, setCorrectAnswer] = useState('');
+    const [clickedOption, setClickedOption] = useState(null);
+    const [feedback, setFeedback] = useState('');
 
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        setInputValue(value);
+    const getRandomKey = () => {
+        const keys = Object.keys(data);
+        return keys[Math.floor(Math.random() * keys.length)];
+    };
 
-        if (value in data) {
-            setOutput(data[value]);
+    const shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        }
+        return array;
+    };
+
+    const generateQuizOptions = () => {
+        const correctKey = getRandomKey();
+        const correctValue = data[correctKey];
+
+        // Prepare to generate options
+        const options = new Set();
+        options.add(correctKey); // Add the correct answer
+
+        // Generate random incorrect options
+        while (options.size < 4) {
+            const randomKey = getRandomKey();
+            options.add(randomKey);
+        }
+
+        const shuffledOptions = shuffleArray(Array.from(options)); // Convert Set to Array and shuffle it
+        setQuizOptions(shuffledOptions); // Set the shuffled options
+        setOutput(correctValue); // Set the output to the correct value
+        setCorrectAnswer(correctKey); // Store the correct answer key
+        setClickedOption(null); // Reset the clicked option
+        setFeedback(''); // Reset feedback
+    };
+
+
+    const checkAnswer = (option) => {
+        setClickedOption(option);
+
+        if (option === correctAnswer) {
+            setScore(Score+1)
+            setFeedback('Correct!');
         } else {
-            setOutput("Invalid number");
+            setFeedback(`Wrong! The correct answer is: ${correctAnswer}`);
         }
     };
 
     return (
-        <div>
-            <h1 className='px-10 py-5 text-3xl font-bold  '>Memorize Major List</h1>
-            <input
+        <>
+            <div>
+                <h1 className='mx-10 my-5 text-3xl font-bold'>Memorize Major List</h1>
+            </div>
 
-                type="number"
-                value={inputValue}
-                onChange={handleInputChange}
-                placeholder="Enter a number"
-            />
-            <p>Result: {output}</p>
-        </div>
+            {/* Quiz */}
+            <div className='w-1/2 m-10'>
+                <h2 className='text-2xl font-semibold my-10'>Quiz: Select the correct number:</h2>
+                <div className='text-2xl font-semibold mx-5 flex justify-end'>Score : {Score}</div>
+                <div className='w-full h-14 p-1 my-6 border-2 border-gray-500 text-4xl font-semibold justify-center items-center flex'>{output}</div>
+
+                {/* Options */}
+                <div className='grid grid-cols-2 gap-4'>
+                    {quizOptions.map((option) => (
+                        <div
+                            key={option}
+                            className={`w-72 h-12 m-4 border-2 translate-y-2 cursor-pointer border-gray-500 shadow-lg rounded-lg text-3xl font-bold flex justify-center items-center 
+        ${clickedOption === option ? (option === correctAnswer ? 'bg-green-500' : 'bg-red-500') : 'bg-gray-100'}`}
+                            onClick={() => checkAnswer(option)} // Check answer on click
+                        >
+                            {option}
+                        </div>
+                    ))}
+                </div>
+                <button
+                    onClick={generateQuizOptions}
+                    className='mt-4 mb-6 bg-blue-500 text-white p-2 rounded-lg border-t'
+                >
+                    Generate Quiz Options
+                </button>
+
+                {/* Feedback message */}
+                {feedback && <div className='text-xl font-semibold text-center mt-4'>{feedback}</div>}
+            </div>
+        </>
     );
 }
