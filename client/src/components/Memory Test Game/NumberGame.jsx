@@ -10,7 +10,9 @@ export default function NumberGenerator() {
 
     // Generate a random number based on selected digit count
     const generateNumber = () => {
-        const randomNumber = Math.floor(Math.pow(10, digitCount - 1) + Math.random() * 9 * Math.pow(10, digitCount - 1)).toString();
+        const randomNumber = Math.floor(
+            Math.pow(10, digitCount - 1) + Math.random() * 9 * Math.pow(10, digitCount - 1)
+        ).toString();
         const formatted = randomNumber.match(/.{1,3}/g).join(" ");
         setFormattedNumber(formatted);
         setInputDigits(new Array(digitCount).fill(''));
@@ -52,7 +54,7 @@ export default function NumberGenerator() {
                     type="number"
                     value={digitCount}
                     onChange={(e) => setDigitCount(Math.max(4, Math.min(20, Number(e.target.value))))}
-                    className="w-full border border-gray-300 p-2 rounded-lg mb-4 text-center"
+                    className="w-full border border-gray-300 p-2 rounded-lg mb-4 text-center focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter number of digits"
                 />
 
@@ -63,7 +65,7 @@ export default function NumberGenerator() {
                 <select
                     value={timeLimit}
                     onChange={(e) => setTimeLimit(Number(e.target.value))}
-                    className="w-full border border-gray-300 p-2 rounded-lg mb-4 text-center"
+                    className="w-full border border-gray-300 p-2 rounded-lg mb-4 text-center focus:ring-2 focus:ring-blue-500"
                 >
                     <option value={30}>30 seconds</option>
                     <option value={60}>60 seconds</option>
@@ -71,10 +73,10 @@ export default function NumberGenerator() {
                     <option value={120}>120 seconds</option>
                 </select>
 
-                {/* Generate Button */}
+                {/* Stylish Generate Button */}
                 <button
                     onClick={generateNumber}
-                    className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 rounded-lg shadow-lg transform hover:scale-105 hover:from-blue-600 hover:to-indigo-600 focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                 >
                     Generate Number
                 </button>
@@ -93,7 +95,7 @@ export default function NumberGenerator() {
                     </div>
                 )}
 
-                {/* Input Blocks */}
+                {/* Input Blocks for User's OTP-like Input */}
                 {formattedNumber && (
                     <div className="flex flex-wrap justify-center gap-2 mt-4">
                         {inputDigits.map((digit, index) => (
@@ -103,7 +105,7 @@ export default function NumberGenerator() {
                                 value={digit}
                                 onChange={(e) => handleInputChange(e.target.value, index)}
                                 ref={(el) => (inputRefs.current[index] = el)}
-                                className="w-10 h-10 border border-gray-300 text-center text-lg rounded-lg"
+                                className="w-12 h-12 border border-gray-300 text-center text-lg rounded-lg shadow-md focus:ring-2 focus:ring-blue-500"
                                 maxLength="1"
                             />
                         ))}

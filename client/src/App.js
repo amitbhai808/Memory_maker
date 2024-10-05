@@ -15,6 +15,7 @@ import MajorSystem from './components/Memory Method/MajorSystem';
 
 // Memory Test Game
 import NumberGame from './components/Memory Test Game/NumberGame';
+import PegTable from './components/Memory Test Game/MemorizeMajorLIst'
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
 
         {/* memory test game  */}
         <Route path="/numberGame" element={<NumberGame />} />
+        <Route path="/pegTable" element={<PegTable />} />
       </Routes>
       <Footer />
     </Router>
