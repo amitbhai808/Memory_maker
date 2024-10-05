@@ -166,7 +166,7 @@ export default function MemorizeMajorList() {
             </div>
 
             {/* Quiz */}
-            <div className='w-1/2 m-10'>
+            <div className='w-1/2 m-10 border-2 border-gray-500/80 rounded-xl py-5 px-12 shadow-xl'>
                 <h2 className='text-2xl font-semibold my-10'>Quiz: Select the correct number:</h2>
                 <div className='text-2xl font-semibold mx-5 flex justify-end'>Score : {Score}</div>
                 <div className='w-full h-14 p-1 my-6 border-2 border-gray-500 text-4xl font-semibold justify-center items-center flex'>{output}</div>
